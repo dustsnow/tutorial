@@ -1,0 +1,2 @@
+/usr/bin/ar cr liblibLocal.a  CMakeFiles/libLocal.dir/subfolder/local.cpp.o
+/usr/bin/ranlib liblibLocal.a

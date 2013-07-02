@@ -1,0 +1,7 @@
+/tmp/ccJwalbj.o: In function `CollisionGeometry':
+/usr/local/include/fcl/collision_object.h:62: undefined reference to `fcl::AABB::AABB()'
+/tmp/ccJwalbj.o: In function `Sphere':
+/usr/local/include/fcl/shape/geometric_shapes.h:102: undefined reference to `vtable for fcl::Sphere'
+/tmp/ccJwalbj.o: In function `~Sphere':
+/usr/local/include/fcl/shape/geometric_shapes.h:99: undefined reference to `vtable for fcl::Sphere'
+collect2: ld returned 1 exit status

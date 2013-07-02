@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/dustsnow/Documents/tutorial/ex3-linking/main.cpp
+iostream
+-
+fcl/narrowphase/narrowphase.h
+/home/dustsnow/Documents/tutorial/ex3-linking/fcl/narrowphase/narrowphase.h
+fcl/collision.h
+/home/dustsnow/Documents/tutorial/ex3-linking/fcl/collision.h
+
+/home/dustsnow/Documents/tutorial/ex3-linking/subfolder/local.cpp
+
