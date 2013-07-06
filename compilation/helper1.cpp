@@ -8,17 +8,17 @@
 #include "helper1.h"
 
 void A::incrementBsValue() {
-	B->val += val1;
+	b->val += val1;
 }
 
-int getVal1 () { 
-	return val1; 
+int A::getVal1 () const{ 
+	return A::val1; 
 }
 	
-int B::getVal2 () { 
+int A::getVal2 () { 
 	return val2; 
 }	
 
-B* getB () { 
-	return b; 
-}
+// B* getB () { 
+// 	return b; 
+// }

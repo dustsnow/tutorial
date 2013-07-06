@@ -6,11 +6,11 @@
  * Note the difference between a struct and class here.
  */
 
-#include "helper1.h"
+// #include "helper1.h"
 
 /// The definition of class B
 struct B {
 
 	/// The value of B
-	static const int val = 3;
+	int val;
 };
