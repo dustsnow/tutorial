@@ -38,5 +38,6 @@ public:
 																				///  not change the variables of this class
 	int getVal2 ();												///< Returns val2
 	B* getB () { return b; }							///< Returns the local instance of B
+	B* setB (B* newb) { b = newb;}
 };
 int A::val1 = 1;

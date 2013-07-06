@@ -19,6 +19,3 @@ int A::getVal2 () {
 	return val2; 
 }	
 
-// B* getB () { 
-// 	return b; 
-// }

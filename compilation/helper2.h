@@ -5,8 +5,9 @@
  * @brief Contains the class definition of B for examples 2.
  * Note the difference between a struct and class here.
  */
-
-// #include "helper1.h"
+#ifndef HELPER2_H
+#define HELPER2_H
+//#include "helper1.h"
 
 /// The definition of class B
 struct B {
@@ -14,3 +15,4 @@ struct B {
 	/// The value of B
 	int val;
 };
+#endif
