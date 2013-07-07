@@ -13,6 +13,7 @@
 #include <fstream>
 #include <iostream>
 #include <assert.h>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -30,7 +31,7 @@ void readDictionary (char*** dictionary) {
 	// Read the lines one by one - assume each word is on a line
 	char line [1024];
 	size_t wordCounter = 0;
-	while(file.getline(line, 1024)) {
+	while(file.getline(line, 1024) && wordCounter < NUM_WORDS) {
 		char* temp = strcpy((*dictionary)[wordCounter++], line);
 	}
 }
@@ -49,7 +50,7 @@ bool findWord (char** dictionary, const char* word, size_t start_idx, size_t end
 
 	// Check if the word is before the start index or after the index
 	if(strcmp(dictionary[start_idx], word) > 0) return false;
-	else if(strcmp(dictionary[end_idx + 1], word) < 0) return false;
+	else if(strcmp(dictionary[end_idx], word) < 0) return false;
 
 	// Check if we recursed so deep that the start and the end index are the same. If so, the word has to be
 	// this index for this recursion to return successfully.
@@ -69,6 +70,8 @@ bool findWord (char** dictionary, const char* word, size_t start_idx, size_t end
 
 	// Try the first part
 	size_t middle_idx = (start_idx + end_idx) / 2;
+	// size_t *middle_idx = new size_t;
+	// *middle_idx = (start_idx + end_idx) / 2;
 	bool successPart1 = findWord(dictionary, word, start_idx, middle_idx, goal);
 	if(successPart1) return true;
 
@@ -100,8 +103,8 @@ int main () {
 		printf("entered: '%s'\n", word);
 
 		// Search for the word
-		size_t* index = NULL;
+		size_t* index = (size_t*)malloc(sizeof(size_t));
 		bool result = findWord(dictionary, word, 0, NUM_WORDS-1, index);
-		printf("result: %d, index: %lu\n", result, index + 1);
+		printf("result: %d, index: %lu\n", result, *(index) + 1);
   }
 }
