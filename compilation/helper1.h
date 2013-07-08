@@ -7,6 +7,8 @@
  * NOTE: Do not change the public/private definitions of members. That is usually a simple
  * solution/hack but would defeat the purpose of the exercise.
  */
+// #ifndef HELPER1_H
+// #define HELPER1_H
 
 #include "helper2.h"
 
@@ -22,7 +24,6 @@ class A {
   // How can we declare a static variable in a class? Do not make this variable a const for the
 	// purpose of for this exercise.
 	static int val1;									///< The fixed value 
-
 public:
 
 	/// The constructor with a parameter
@@ -38,6 +39,7 @@ public:
 																				///  not change the variables of this class
 	int getVal2 ();												///< Returns val2
 	B* getB () { return b; }							///< Returns the local instance of B
-	B* setB (B* newb) { b = newb;}
 };
-int A::val1 = 1;
+
+
+// #endif

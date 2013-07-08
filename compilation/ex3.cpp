@@ -10,14 +10,17 @@
 #include <stdlib.h>
 #include <time.h>
 #include "helper3.h"
-#include <Eigen/Dense>
+#include </usr/include/eigen3/Eigen/Dense>
 #include <iostream>
 
 using namespace std;
+using namespace Eigen;
 
 /// The function does nothing and the caller just continues in the while loop
 void doNothing() {
-	continue;
+	for(;;){
+		continue;
+	}
 }
 
 /// The main thread
@@ -39,7 +42,8 @@ int main () {
 
 			// Create two template class instances and sum their values
 			case 0: {
-				C c1 (5.0), c2 (7.0);
+				C <double> c1(5.0); 
+				C <double> c2(7.0);
 				double result = c1.value + c2.value;
 				printf("\tresult: %lf\n", result);
 			} break;
@@ -56,7 +60,7 @@ int main () {
 				Matrix3d mB = AngleAxis <double> (M_PI_2, Vector3d(1.0, 0.0, 0.0)).matrix();
 				cout << "Matrix A: \n" << mA << endl;
 				cout << "Matrix B: \n" << mB << endl;
-				cout << "Summed two matrices: \n" << mA+mB << endl;
+				// cout << "Summed two matrices: \n" << mA+mB << endl;
 			} break;
 		}
 	}

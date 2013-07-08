@@ -13,6 +13,6 @@
 struct B {
 
 	/// The value of B
-	int val;
+	static int val;
 };
 #endif

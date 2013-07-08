@@ -7,12 +7,13 @@
 
 #include "helper1.h"
 
+int A::val1 = 1;
 void A::incrementBsValue() {
 	b->val += val1;
 }
 
 int A::getVal1 () const{ 
-	return A::val1; 
+	return val1; 
 }
 	
 int A::getVal2 () { 

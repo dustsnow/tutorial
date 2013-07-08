@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/dustsnow/Documents/tutorial/compilation/ex2.cpp
+helper1.h
+/home/dustsnow/Documents/tutorial/compilation/helper1.h
+helper2.h
+/home/dustsnow/Documents/tutorial/compilation/helper2.h
+assert.h
+-
+
+/home/dustsnow/Documents/tutorial/compilation/helper1.h
+helper2.h
+/home/dustsnow/Documents/tutorial/compilation/helper2.h
+
+/home/dustsnow/Documents/tutorial/compilation/helper2.h
+
