@@ -1,0 +1,15 @@
+-L[dir]
+	include the library dir
+-I[dir]
+	include the header dir
+-l[lib]
+	library
+
+How to include gtest
+g++ -L/usr/lib/ -I/usr/include/gtest ex.cpp -lgtest -lpthread
+
+How to include fcl
+g++ -L/usr/lib/ -I/usr/include/gtest -L/usr/local/include -L/usr/lib/fcl -I/usr/include/fcl ex.cpp -lgtest -lpthread -lfcl
+g++ -L/usr/lib/ -I/usr/include/gtest -L/usr/local/include -L/usr/lib/fcl -I/usr/include/fcl ex.cpp -lgtest -lpthread -lfcl
+
+echo "Hello"
