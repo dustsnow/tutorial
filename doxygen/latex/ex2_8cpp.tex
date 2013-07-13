@@ -1,0 +1,70 @@
+\hypertarget{ex2_8cpp}{\section{ex2.\-cpp File Reference}
+\label{ex2_8cpp}\index{ex2.\-cpp@{ex2.\-cpp}}
+}
+
+
+This file is the second example from runtime errors section and placed here to create a doxygen file out of it. Note that doxygen only documents comments starting with /// and ///$<$, and not //.  
+
+
+{\ttfamily \#include $<$stdlib.\-h$>$}\\*
+{\ttfamily \#include $<$iostream$>$}\\*
+{\ttfamily \#include $<$vector$>$}\\*
+{\ttfamily \#include $<$Eigen/\-Dense$>$}\\*
+{\ttfamily \#include $<$fstream$>$}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{ex2_8cpp_ac606288569a5e463d23443e57a4c698c}{move\-Towards\-Goal} (Vector\-Xd q)
+\begin{DoxyCompactList}\small\item\em Makes a small displacement towards the goal. \end{DoxyCompactList}\item 
+\hypertarget{ex2_8cpp_aa4bc4c5eac1bdceb14795cdcda6f8ad2}{void \hyperlink{ex2_8cpp_aa4bc4c5eac1bdceb14795cdcda6f8ad2}{print\-Trajectory} ()}\label{ex2_8cpp_aa4bc4c5eac1bdceb14795cdcda6f8ad2}
+
+\begin{DoxyCompactList}\small\item\em Print the results into a file. \end{DoxyCompactList}\item 
+\hypertarget{ex2_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{int \hyperlink{ex2_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{main} ()}\label{ex2_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}
+
+\begin{DoxyCompactList}\small\item\em The main thread. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{ex2_8cpp_a10bd613dd2eb3103bef9e4ffc64225ca}{const double {\bfseries l1} = 1.\-0}\label{ex2_8cpp_a10bd613dd2eb3103bef9e4ffc64225ca}
+
+\item 
+\hypertarget{ex2_8cpp_a9508ba9efd798b56ca542b6f4a4724e2}{const double \hyperlink{ex2_8cpp_a9508ba9efd798b56ca542b6f4a4724e2}{l2} = 2.\-0}\label{ex2_8cpp_a9508ba9efd798b56ca542b6f4a4724e2}
+
+\begin{DoxyCompactList}\small\item\em The link lengths. \end{DoxyCompactList}\item 
+\hypertarget{ex2_8cpp_ab3229ad4421c28c3056bd09019a0f4f5}{const double \hyperlink{ex2_8cpp_ab3229ad4421c28c3056bd09019a0f4f5}{small\-Length} = 0.\-05}\label{ex2_8cpp_ab3229ad4421c28c3056bd09019a0f4f5}
+
+\begin{DoxyCompactList}\small\item\em The small motion towards the goal. \end{DoxyCompactList}\item 
+\hypertarget{ex2_8cpp_a9989664388978d26de30d5ea1dff2647}{Vector\-Xd \hyperlink{ex2_8cpp_a9989664388978d26de30d5ea1dff2647}{x\-Goal}}\label{ex2_8cpp_a9989664388978d26de30d5ea1dff2647}
+
+\begin{DoxyCompactList}\small\item\em The goal value for the end-\/effector. \end{DoxyCompactList}\item 
+\hypertarget{ex2_8cpp_a63530ef9b74773c7a4ed47c474a0f657}{vector$<$ Vector\-Xd $>$ \hyperlink{ex2_8cpp_a63530ef9b74773c7a4ed47c474a0f657}{joints}}\label{ex2_8cpp_a63530ef9b74773c7a4ed47c474a0f657}
+
+\begin{DoxyCompactList}\small\item\em The joint values that take the end-\/effector from start to goal. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This file is the second example from runtime errors section and placed here to create a doxygen file out of it. Note that doxygen only documents comments starting with /// and ///$<$, and not //. \begin{DoxyAuthor}{Author}
+Can Erdogan 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+June 06, 2013 
+\end{DoxyDate}
+
+
+\subsection{Function Documentation}
+\hypertarget{ex2_8cpp_ac606288569a5e463d23443e57a4c698c}{\index{ex2.\-cpp@{ex2.\-cpp}!move\-Towards\-Goal@{move\-Towards\-Goal}}
+\index{move\-Towards\-Goal@{move\-Towards\-Goal}!ex2.cpp@{ex2.\-cpp}}
+\subsubsection[{move\-Towards\-Goal}]{\setlength{\rightskip}{0pt plus 5cm}void move\-Towards\-Goal (
+\begin{DoxyParamCaption}
+\item[{Vector\-Xd}]{q}
+\end{DoxyParamCaption}
+)}}\label{ex2_8cpp_ac606288569a5e463d23443e57a4c698c}
+
+
+Makes a small displacement towards the goal. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em q} & The joint value from which we move towards the goal \\
+\hline
+\end{DoxyParams}
