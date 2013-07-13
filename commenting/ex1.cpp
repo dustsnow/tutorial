@@ -30,6 +30,15 @@ int main () {
 		double d2 = m2[0] * (m2[4] * m2[8] - m2[5] * m2[7]) - m2[1] * (m2[3] * m2[8] - m2[5] * m2[6]) + m2[2] * (m2[3] * m2[7] - m2[4] * m2[6]);// Calculate the deteminant of matrix m 
 		if((d != 0) && (d2 != 0)) break;// the determinant of matrix m and m2 must not be 0, so that matrix m and m2 are invertible
 	}
+	m[0] = 5;	m2[0] = 1;
+	m[1] = 5;	m2[1] = 2;
+	m[2] = 3;	m2[2] = 4;
+	m[3] = 1;	m2[3] = 3;
+	m[4] = 2;	m2[4] = 2;
+	m[5] = 2;	m2[5] = 2;
+	m[6] = 2;	m2[6] = 2;
+	m[7] = 3;	m2[7] = 4;
+	m[8] = 5;	m2[8] = 2;
 
 	// calculate the multiplication of m and m2:
 	double p [9];
@@ -108,7 +117,7 @@ int main () {
 	// any assertion errors.
 
 	// calculate the multiplication of e and m2:
-	// t = e * m2
+	// t = e * m
 	double t [9];
 	t[0] = e[0] * m[0] + e[1] * m[3] + e[2] * m[6]; 
 	t[3] = e[3] * m[0] + e[4] * m[3] + e[5] * m[6]; 
@@ -121,8 +130,8 @@ int main () {
 	t[8] = e[6] * m[2] + e[7] * m[5] + e[8] * m[8]; 
 
 	// calculate the multiplication of m and t:
-	// r = m * t = m * (e * m2) = m * (p^-1 * m2)
-	//   = m * ( ( m * m2 )^-1 * m2 )
+	// r = m2 * t = m2 * (e * m) = m2 * (p^-1 * m)
+	//   = m2 * ( ( m * m2 )^-1 * m )
 	double r [9];
 	r[0] = m2[0] * t[0] + m2[1] * t[3] + m2[2] * t[6]; 
 	r[3] = m2[3] * t[0] + m2[4] * t[3] + m2[5] * t[6]; 
@@ -135,6 +144,7 @@ int main () {
 	r[8] = m2[6] * t[2] + m2[7] * t[5] + m2[8] * t[8]; 
 
 	for(size_t i = 0; i < 9; i++) {
+		//cout << r[i] << endl;
 		if(i % 4 == 0) assert(fabs(r[i] - 1) < 1e-5);
 		else assert(fabs(r[i]) < 1e-5);
 	}
