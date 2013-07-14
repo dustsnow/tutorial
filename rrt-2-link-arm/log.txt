@@ -1,0 +1,11 @@
+Can Matrix be dynamics resized?
+
+Why dists is doubled?
+
+index(dataset,...)
+dataset has to be initialized. Otherwise, the unintializd part will be zero. for example
+Matrix<double> dataset(new double[2],1,2);
+Index<L2<double> > index(dataset,...)
+Now even though dataset doesn't initialize. It's default value will be (0,0). Put it another way, when you add points, your points will be added at index 1 instead of 0;
+
+
