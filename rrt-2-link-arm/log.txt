@@ -1,6 +1,7 @@
 Can Matrix be dynamics resized?
 
 Why dists is doubled?
+It indeed doubles the distance
 
 index(dataset,...)
 dataset has to be initialized. Otherwise, the unintializd part will be zero. for example
