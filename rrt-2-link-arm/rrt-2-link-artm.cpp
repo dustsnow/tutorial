@@ -9,25 +9,32 @@
 ///     step size(double pt_joint_step);
 ///output: a sequence of steps 
 ///		output (matrix output)
+
+
 #include <flann/flann.hpp>
 #include <flann/io/hdf5.h>
-#include <fcl/narrowspace/narrowspace.h>
+#include <fcl/narrowphase/narrowphase.h>
 #include <fcl/collision.h>
 #include <fcl/collision_data.h>
 #include <fcl/collision_object.h>
 #include <fcl/math/transform.h>
 
+#include <math>
 #include <stdlib.h>
 #include <vector>
 
 using namespace flann;
 using namespace std;
+using namespace fcl;
 
 int l1 = 1.0;//length of link 1
 int l2 = 2.0;//length of link 2
-
+int w = 0.1;
+double node1_x = 0;
+double node1_y = 0;
 
 bool violation = false;// Collision Checker result. if true, pick a random point as target; else set target to goal
+GJKSolver_libccd solver;
 
 int main(int argc, char** argv){
 
@@ -83,17 +90,54 @@ int main(int argc, char** argv){
 		/// Find Nearest Neighbor Point(nearest)
 		index.knnSearch(query, indices, dists, 1, flann::SearchParams(50));
 		(nearest.ptr())[0] = dataset[(*indices[0])][0];
-        (nearest.ptr())[1] = dataset[(*indices[0])+1][1];
+        (nearest.ptr())[1] = dataset[(*indices[0])][1];
+		//cout << dataset[(*indices[0])][0] << endl;
+        //cout <<(nearest.ptr())[0]<< endl;
+        //cout << dataset[(*indices[0])][1] << endl;
+		//cout <<(nearest.ptr())[1]<< endl;
 
 		/// Collision Check for NN-Point(nearest) and new edge 
-
-
 //
 //		/// Add new point(pt_joint_new) and new edge to tree
 //
 //		/// Calculate distance between new point and goal point(d). if d less than or equal to the threshold of the goal point, this is the good enough result. Done
     }
 	return 1;
+}
+/* 
+ * Convert from joint space to workspace
+ * Parameters:
+ *		Matrix<double> workspace
+ *			workspace[0][0]:	x coordinate of node1
+ *			workspace[0][1]:	y coordinate of node1
+ *			workspace[1][0]:	x coordinate of node2
+ *			workspace[1][1]:	y coordinate of node2
+ *			workspace[2][0]:	x coordinate of node3
+ *			workspace[2][1]:	y coordinate of node3
+ * 		Matrix<double> jointspace
+ *			jointspace[0][0]: joint value 1
+ *			jointspace[0][1]: joint value 2
+ */
+void workspaceConversion(Matrix<double> workspace, Matrix<double> jointspace){
+	theta1 = jointspace[0][0];
+	theta2 = jointspace[0][1];
+	workspace[1][0] = l1 * cos(theta1);
+	workspace[1][1] = l1 * sin(theta1);
+	workspace[2][0] = l2 * cos(theta1 + theta2) + workspace[1][0];
+	workspace[2][1] = l2 * sin(theta1 + theta2) + workspace[1][1];
+}
+bool collisionCheck(Matrix<double> *point){
+	// Calculate center point(cp)
+	double cp1_x = l1/2;
+	double cp1_y = w/2;
+	double cp2_x = l2/2;
+	double cp2_y = w/2;
+
+	// Create two rectangulers represent 2 link	
+	Box link1(l1,w,0);
+	Box link2(l2,w,0);
+	Transform3f tf_link1(Vec3f(cp_x,cp_y,0));
+	Transform3f tf_link1(Vec3f(cp_x,cp_y,0));
 }
 //Matrix<double> dataset;
 //load_from_file(dataset,"dataset.h5","dataset");
