@@ -62,6 +62,7 @@ int main(int argc, char** argv){
 
 //    /// points that are searched for
 //	Matrix<double> pt_query(new double[2],1,2);
+
     /// Test points
 	Matrix<double> pt_test(new double[2],1,2);
 
@@ -121,10 +122,6 @@ double *d;
 
 		cout << "Indices" << endl;
 		cout << (*indices[0]) << endl;
-		//cout << dataset[(*indices[0])][0] << endl;
-        //cout <<(pt_nearest.ptr())[0]<< endl;
-        //cout << dataset[(*indices[0])][1] << endl;
-		//cout <<(pt_nearest.ptr())[1]<< endl;
 
 		/// If obstacles present, do collision check
 		//if(obstacle_flag){
@@ -134,31 +131,12 @@ double *d;
 		//}
 
 		calculateNewPoint(pt_nearest, pt_target, pt_new);
-		cout << "Nearest"<<endl;
-        cout <<(pt_nearest.ptr())[0]<< endl;
-		cout <<(pt_nearest.ptr())[1]<< endl;
-		cout << "Target"<<endl;
-		cout <<(pt_target.ptr())[0]<< endl;
-		cout <<(pt_target.ptr())[1]<< endl;
-		cout << "New"<<endl;
-		cout <<pt_new[0][0]<< endl;
-		cout <<pt_new[0][1]<< endl;
 
 		/// Calculate distance between new point and pt_goal point(d). if d less than or equal to the threshold of the pt_goal point, this is the good enough result. Done
 		if(calculateDistance(pt_goal, pt_new) <= step_size) break;
 
 		/// If collision check pass, Add new point and new edge to tree
 		index.addPoints(pt_new);
-		//pt_nearest[0][0] = pt_new[0][0];	
-		//pt_nearest[0][1] = pt_new[0][1];	
-		a = index.getPoint(0);
-		b = index.getPoint(1);
-		c = index.getPoint(2);
-		d = index.getPoint(3);
-		//cout << "a:" << *a << " " << *(a+1) << endl;
-		//cout << "b:" << *b << " " << *(b+1) << endl;
-		//cout << "c:" << *c << " " << *(c+1) << endl;
-		//cout << "d:" << *d << " " << *(d+1) << endl;
 
 		//workspaceConversion(&outpoint,pt_new);
 
@@ -185,7 +163,6 @@ void calculateNewPoint(Matrix<double> pt_nearest, Matrix<double> pt_target,Matri
 	double y_nearest = pt_nearest[0][1];
 	double x_target = pt_target[0][0];
 	double y_target = pt_target[0][1];
-	//double distance = sqrt(pow((x_target - x_nearest),2)+pow((x_target - x_nearest),2));
 	double distance = calculateDistance(pt_target,pt_nearest);
 	pt_new[0][0] = (x_target - x_nearest)*step_size/distance+x_nearest;
 	pt_new[0][1] = (y_target - y_nearest)*step_size/distance+y_nearest;
