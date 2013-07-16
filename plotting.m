@@ -3,7 +3,8 @@ l2 = 2.0;
 
 goal = [-0.5,2.0];
 angle = csvimport('path.csv', 'delimiter',' ','noHeader',true);
-for i=67:-1:1
+[row col] = size(angle);
+for i=row:-1:1
     point1_x = l1*cos(angle{i,1});
     point1_y = l1*sin(angle{i,1});
     point2_x = point1_x + l2*cos(angle{i,1} + angle{i,2});
