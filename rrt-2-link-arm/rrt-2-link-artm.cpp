@@ -91,6 +91,10 @@ int main(int argc, char** argv){
 	//index.knnSearch(pt_query, indices, dists, 1, flann::SearchParams(5));
 
 	int number_of_points = 0;
+double *a;
+double *b;
+double *c;
+double *d;
 	while(true){
 		if(number_of_points >= 2000) break;
 		number_of_points++;
@@ -110,9 +114,11 @@ int main(int argc, char** argv){
 		//}
 
 		/// Find Nearest Neighbor Point(pt_nearest)
-		//index.knnSearch(pt_target, indices, dists, 1, flann::SearchParams(50));
-		//(pt_nearest.ptr())[0] = dataset[(*indices[0])][0];
-        //(pt_nearest.ptr())[1] = dataset[(*indices[0])][1];
+		index.knnSearch(pt_target, indices, dists, 1, flann::SearchParams(50));
+		
+		pt_nearest[0][0] = (index.getPoint(indices[0][0]))[0];
+        pt_nearest[0][1] = (index.getPoint(indices[0][0]))[1];
+
 		cout << "Indices" << endl;
 		cout << (*indices[0]) << endl;
 		//cout << dataset[(*indices[0])][0] << endl;
@@ -143,8 +149,16 @@ int main(int argc, char** argv){
 
 		/// If collision check pass, Add new point and new edge to tree
 		index.addPoints(pt_new);
-		pt_nearest[0][0] = pt_new[0][0];	
-		pt_nearest[0][1] = pt_new[0][1];	
+		//pt_nearest[0][0] = pt_new[0][0];	
+		//pt_nearest[0][1] = pt_new[0][1];	
+		a = index.getPoint(0);
+		b = index.getPoint(1);
+		c = index.getPoint(2);
+		d = index.getPoint(3);
+		//cout << "a:" << *a << " " << *(a+1) << endl;
+		//cout << "b:" << *b << " " << *(b+1) << endl;
+		//cout << "c:" << *c << " " << *(c+1) << endl;
+		//cout << "d:" << *d << " " << *(d+1) << endl;
 
 		//workspaceConversion(&outpoint,pt_new);
 
@@ -239,14 +253,14 @@ void printWorkspace(Matrix<double> pt){
 
 	
 
-//double *a = index.getPoint(0);
-//double *b = index.getPoint(1);
-//double *c = index.getPoint(2);
-//double *d = index.getPoint(3);
-//cout << "a:" << *a << " " << *(a+1) << endl;
-//cout << "b:" << *b << " " << *(b+1) << endl;
-//cout << "c:" << *c << " " << *(c+1) << endl;
-//cout << "d:" << *d << " " << *(d+1) << endl;
+
+
+
+
+
+
+
+
 //flann::save_to_file(pt_query,"result.h5","pt_query");
 //flann::save_to_file(dataset,"result.h5","dataset");
 //flann::save_to_file(indices,"result.h5","indices");
