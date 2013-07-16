@@ -83,13 +83,12 @@ int main(int argc, char** argv){
 
 	/// pt_goal point 
 	Matrix<double> pt_goal(new double[2],1,2);
-	(pt_goal.ptr())[0] = -0.5;
-	(pt_goal.ptr())[1] = 2.0;
+	pt_goal[0][0] = 0.45;
+	pt_goal[0][1] = 1.83;
 
 	int nn= 1;	
 	Matrix<int> indices(new int[pt_target.rows*nn], pt_target.rows,nn);
 	Matrix<double> dists(new double[pt_target.rows*nn], pt_target.rows,nn);
-	//index.knnSearch(pt_query, indices, dists, 1, flann::SearchParams(5));
 
 	int number_of_points = 0;
 	while(true){
@@ -104,18 +103,14 @@ int main(int argc, char** argv){
 			(pt_target.ptr())[0] = (rand()*100+100);
 			(pt_target.ptr())[1] = (rand()*100+100);
 		} else {
-		  (pt_target.ptr())[0] = (pt_goal.ptr())[0];
-		  (pt_target.ptr())[1] = (pt_goal.ptr())[1];
+		    (pt_target.ptr())[0] = (pt_goal.ptr())[0];
+		    (pt_target.ptr())[1] = (pt_goal.ptr())[1];
 		}
 
 		/// Find Nearest Neighbor Point(pt_nearest)
 		index.knnSearch(pt_target, indices, dists, 1, flann::SearchParams(50));
-		
 		pt_nearest[0][0] = (index.getPoint(indices[0][0]))[0];
         pt_nearest[0][1] = (index.getPoint(indices[0][0]))[1];
-
-		cout << "Indices" << endl;
-		cout << (*indices[0]) << endl;
 
 		// If obstacles present, do collision check
 		if(obstacle_flag){
@@ -133,7 +128,7 @@ int main(int argc, char** argv){
 		/// If collision check pass, Add new point and new edge to tree
 		index.addPoints(pt_new);
 
-		ofstream out("path",ofstream::app);
+		ofstream out("cpp_plot/path",ofstream::app);
 		out << pt_new[0][0] << " " << pt_new[0][1] << endl;
     }
 	return 1;
@@ -173,14 +168,23 @@ void calculateNewPoint(Matrix<double> pt_nearest, Matrix<double> pt_target,Matri
  *			jointspace[0][0]: joint value 1
  *			jointspace[0][1]: joint value 2
  */
-void workspaceConversion(Matrix<double> *workspace, Matrix<double> jointspace){
-	double theta1 = jointspace[0][0];
-	double theta2 = jointspace[0][1];
-	(*workspace)[1][0] = l1 * cos(theta1);
-	(*workspace)[1][1] = l1 * sin(theta1);
-	(*workspace)[2][0] = l2 * cos(theta1 + theta2) + (*workspace)[1][0];
-	(*workspace)[2][1] = l2 * sin(theta1 + theta2) + (*workspace)[1][1];
-}
+//void jointsp2worksp(Matrix<double> *jointspace, Matrix<double> workspace){
+//	double theta1 = jointspace[0][0];
+//	double theta2 = jointspace[0][1];
+//	(workspace)[1][0] = l1 * cos(theta1);
+//	(workspace)[1][1] = l1 * sin(theta1);
+//	(workspace)[2][0] = l2 * cos(theta1 + theta2) + (*workspace)[1][0];
+//	(workspace)[2][1] = l2 * sin(theta1 + theta2) + (*workspace)[1][1];
+//}
+//
+//void worksp2jointsp(Matrix<double> *workspace, Matrix<double> jointspace){
+//	double theta1 = jointspace[0][0];
+//	double theta2 = jointspace[0][1];
+//	(*workspace)[1][0] = l1 * cos(theta1);
+//	(*workspace)[1][1] = l1 * sin(theta1);
+//	(*workspace)[2][0] = l2 * cos(theta1 + theta2) + (*workspace)[1][0];
+//	(*workspace)[2][1] = l2 * sin(theta1 + theta2) + (*workspace)[1][1];
+//}
 bool collisionCheck(Matrix<double> *point){
 	// Calculate center point(cp)
 	double cp1_x = l1/2;
@@ -199,7 +203,6 @@ bool collisionCheck(Matrix<double> *point){
 }
 
 void printWorkspace(Matrix<double> pt){
-	ofstream out("path",ofstream::out);
 }
 //Matrix<double> dataset;
 //load_from_file(dataset,"dataset.h5","dataset");
@@ -217,18 +220,6 @@ void printWorkspace(Matrix<double> pt){
 //cout<< (indices.ptr())[0] << endl;
 //cout<< "dists:"<<endl;
 //cout<< (dists.ptr())[0] << endl;
-
-
-
-	
-
-
-
-
-
-
-
-
 
 //flann::save_to_file(pt_query,"result.h5","pt_query");
 //flann::save_to_file(dataset,"result.h5","dataset");

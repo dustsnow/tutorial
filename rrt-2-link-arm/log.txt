@@ -10,4 +10,6 @@ Matrix<double> dataset(new double[2],1,2);
 Index<L2<double> > index(dataset,...)
 Now even though dataset doesn't initialize. It's default value will be (0,0). Put it another way, when you add points, your points will be added at index 1 instead of 0;
 
-
+Now it only work given inital joint values and final joint values. 
+It must be improved by given inital joint values and final end-effactor coordinations.
+Leave this task until collision check has been done;
