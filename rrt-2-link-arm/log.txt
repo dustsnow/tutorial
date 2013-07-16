@@ -1,4 +1,5 @@
-Can Matrix be dynamics resized?
+Compile Command
+g++ -g rrt-2-link-artm.cpp -L/usr/lib/fcl -I/usr/include/fcl -lfcl -o rrt
 
 Why dists is doubled?
 It indeed doubles the distance
