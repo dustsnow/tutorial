@@ -92,13 +92,7 @@ int main(int argc, char** argv){
 	//index.knnSearch(pt_query, indices, dists, 1, flann::SearchParams(5));
 
 	int number_of_points = 0;
-double *a;
-double *b;
-double *c;
-double *d;
 	while(true){
-		if(number_of_points >= 2000) break;
-		number_of_points++;
 		/* Try "Direct Approach", 
 		 * If invalid nearsest accountered, 
 		 * 		Go "Randomized Approach"
@@ -106,13 +100,13 @@ double *d;
 		 */
 		
 		/// Set pt_target point as pt_goal point or pick a random point
-		//if (violation_flag) {
-		//	(pt_target.ptr())[0] = (rand()*100+100);
-		//	(pt_target.ptr())[1] = (rand()*100+100);
-		//} else {
-			(pt_target.ptr())[0] = (pt_goal.ptr())[0];
-			(pt_target.ptr())[1] = (pt_goal.ptr())[1];
-		//}
+		if (violation_flag) {
+			(pt_target.ptr())[0] = (rand()*100+100);
+			(pt_target.ptr())[1] = (rand()*100+100);
+		} else {
+		  (pt_target.ptr())[0] = (pt_goal.ptr())[0];
+		  (pt_target.ptr())[1] = (pt_goal.ptr())[1];
+		}
 
 		/// Find Nearest Neighbor Point(pt_nearest)
 		index.knnSearch(pt_target, indices, dists, 1, flann::SearchParams(50));
@@ -123,25 +117,23 @@ double *d;
 		cout << "Indices" << endl;
 		cout << (*indices[0]) << endl;
 
-		/// If obstacles present, do collision check
-		//if(obstacle_flag){
-		//    // Collision Check for NN-Point(pt_nearest) and new edge 
-		//} else{
-		//	// No obstacle
-		//}
+		// If obstacles present, do collision check
+		if(obstacle_flag){
+		    // Collision Check for NN-Point(pt_nearest) and new edge 
+		} else{
+			// No obstacle
+		}
 
 		calculateNewPoint(pt_nearest, pt_target, pt_new);
 
-		/// Calculate distance between new point and pt_goal point(d). if d less than or equal to the threshold of the pt_goal point, this is the good enough result. Done
+		/// Calculate distance between new point and pt_goal point(d). 
+		/// If d less than or equal to the threshold of the pt_goal point, this is the good enough result. Done
 		if(calculateDistance(pt_goal, pt_new) <= step_size) break;
 
 		/// If collision check pass, Add new point and new edge to tree
 		index.addPoints(pt_new);
 
-		//workspaceConversion(&outpoint,pt_new);
-
 		ofstream out("path",ofstream::app);
-		//out << outpoint[0][0] << " " << outpoint[0][1] << endl;
 		out << pt_new[0][0] << " " << pt_new[0][1] << endl;
     }
 	return 1;
