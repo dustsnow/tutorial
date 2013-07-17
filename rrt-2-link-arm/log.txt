@@ -55,3 +55,36 @@ Trial Solution 2: improved trial solution 1. in trial solution 1, the x and y ge
 to their inital and final value
 Result: So much better. Try to find the solution, it takes 20000+ points to find the solution
 
+
+How to initialized a fcl::Matrix3f? row first or column first?
+row first.
+
+
+Collision test between two rectangulars
+First it does't return right result because I use the wrong rotation matrix. 
+I set the rotation matrix as following:
+	cos(p) -sin(p) 0
+	sin(p) cos(p)  0
+	0		0      0
+I set those things related to z to 0, which is incorrect.
+When rotate a rectangular on xy plane, it amounts to rotate around z axis. The right rotation matrix about the z-axis is
+	cos(p) -sin(p) 0
+	sin(p) cos(p)  0
+	0		0      1
+
+
+Unclear, "rotation about z-axis" is rotating respected to the center point or original point?
+Trial 1, assume box rotate respect to original point(aka z-axix). Create a test: rotate box1 and box2 45 degrees. It assumption is correct, they wouldn't touch unless the distance between there center point < 2;
+Trial 1 failed.
+Trial 2, assume box rotate respect to their own center point. Make two box, they are on the side of each other. both rotate 45 degrees. if assumption is correct, they wouldn't collide unless the distance between their center points are < 2*(length of diagonal)
+Trial 2 successed.
+
+
+Why the collisionCheck function cannot access the obstacle defined in main:
+
+
+How to write define doable obstacle?
+run the rrt without obstacles. Pick a point from the result. Place the obstacle at this point.
+
+
+Now the collision check works, the rrt can avoid the obstacles. But we need a way to retrive the path from rrt
