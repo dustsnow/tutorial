@@ -13,3 +13,45 @@ Now even though dataset doesn't initialize. It's default value will be (0,0). Pu
 Now it only work given inital joint values and final joint values. 
 It must be improved by given inital joint values and final end-effactor coordinations.
 Leave this task until collision check has been done;
+
+
+Why knnSearch doesn't return the nearest point when the pt_target are randomly picked?
+gdb debug info. 
+It shows when using index.addPoints(pt_new), it actually add a reference to the pt_new. So whenever pt_new changes, every value added changes.
+Solution Trial 1: The solution is dynamicly allocate pt_new everytime. Move the definition of pt_new into while loop in main function
+│(gdb) call pi(index,5)                                                                                    
+│0       0                                                                                                 
+│-0.640184       0.768221                                                                                  
+│-0.640184       0.768221                                                                                  
+│-0.640184       0.768221                                                                                  
+│-0.640184       0.768221                                                                                  
+│(gdb) n                                                                                                   
+│0.768221                                                                                                  
+│138                     calculateNewPoint(pt_nearest, pt_target, pt_new);                                 
+│(gdb) call pi(index,5)                                                                                    
+│0       0                                                                                                 
+│-0.640184       0.768221                                                                                  
+│-0.640184       0.768221                                                                                  
+│-0.640184       0.768221                                                                                  
+│-0.640184       0.768221                                                                                  
+│(gdb) n                                                                                                   
+│                                                                                                          
+│Breakpoint 5, main (argc=1, argv=) at rrt-2-link-artm.cpp:142                                             
+│142                     if(calculateDistance(pt_goal, pt_new) <= step_size) break;                        
+│(gdb) call pi(index,5)                                                                                    
+│0       0                                                                                                 
+│-1.35167        1.47092                                                                                   
+│-1.35167        1.47092                                                                                   
+│-1.35167        1.47092                                                                                   
+│-1.35167        1.47092                                                                                   
+│(gdb) 
+
+After the addPoints bug, the tree doesn't seems right. Only four major branches in the graph. I guess that happened to demonstrate the rightness of possibilities.
+After investigation, it turns out that the problem is at the random point generation. My code just generate integer number which is not sufficient in this 
+RRT senerio.
+Trial Solution 1: generate random float number, both positive and negative.
+Result: even with random float number genration, rrt only gets a little bit better.
+Trial Solution 2: improved trial solution 1. in trial solution 1, the x and y generator has the same limit, in this trial, make them unequal. Set the limit according 
+to their inital and final value
+Result: So much better. Try to find the solution, it takes 20000+ points to find the solution
+

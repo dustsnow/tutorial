@@ -30,18 +30,19 @@ using namespace fcl;
 
 int l1 = 1.0;//length of link 1
 int l2 = 2.0;//length of link 2
-int w = 0.1;
-double node1_x = 0;
-double node1_y = 0;
 
-bool violation_flag = false;// Collision Checker result. if true, pick a random point as pt_target; else set pt_target to pt_goal
-bool obstacle_flag = false;
+int w = 0.1;
+double step_size = 0.001;
+
+bool violation_flag = true;// Collision Checker result. if true, pick a random point as pt_target; else set pt_target to pt_goal
+bool obstacle_flag = false;// If true, do collision check; else, do direct approach
+
 GJKSolver_libccd solver;
-double step_size = 0.01;
 
 void calculateNewPoint(Matrix<double> pt_nearest, Matrix<double> pt_target,Matrix<double> pt_new);
 double calculateDistance(Matrix<double> pt1, Matrix<double> pt2);
 void workspaceConversion(Matrix<double> *workspace, Matrix<double> jointspace);
+void pi(Index<L2<double> > index,int a);
 
 int main(int argc, char** argv){
 
@@ -51,10 +52,10 @@ int main(int argc, char** argv){
 	dataset[0][0] = 0.1;
 	dataset[0][1] = 0.2;
 
-	/// RRT data of links. First two numbers is the starting point; Last two numbers is the end point;
-	Matrix<double> linkset(new double[4],1,4); 
-	linkset[0][0] = 0.1;
-	linkset[0][1] = 0.2;
+//	/// RRT data of links. First two numbers is the starting point; Last two numbers is the end point;
+//	Matrix<double> linkset(new double[4],1,4); 
+//	linkset[0][0] = 0.1;
+//	linkset[0][1] = 0.2;
 
 	///Construct index
 	Index<L2<double> > index(dataset,flann::KDTreeIndexParams(4));
@@ -75,49 +76,64 @@ int main(int argc, char** argv){
 	pt_nearest[0][0] = 0.1;
 	pt_nearest[0][1] = 0.2;
 
-	/// pt_new point 
-	Matrix<double> pt_new(new double[2],1,2);
-
 	/// outpoint point 
 	Matrix<double> outpoint(new double[2],1,2);
+
+	/// zero point 
+	Matrix<double> pt_zero(new double[2],1,2);
+	pt_zero[0][0] = 0;
+	pt_zero[0][1] = 0;
 
 	/// pt_goal point 
 	Matrix<double> pt_goal(new double[2],1,2);
 	pt_goal[0][0] = 0.45;
 	pt_goal[0][1] = 1.83;
 
-	int nn= 1;	
+	int nn= 3;	
 	Matrix<int> indices(new int[pt_target.rows*nn], pt_target.rows,nn);
 	Matrix<double> dists(new double[pt_target.rows*nn], pt_target.rows,nn);
 
+	srand(time(NULL));
 	int number_of_points = 0;
 	while(true){
-		/* Try "Direct Approach", 
+		/// pt_new point 
+	    Matrix<double> pt_new(new double[2],1,2);
+
+	    /* Try "Direct Approach", 
 		 * If invalid nearsest accountered, 
 		 * 		Go "Randomized Approach"
 		 * Back to "Direct Approach" again;
 		 */
-		
+		if(number_of_points >= 1000) break;
+		number_of_points++;
 		/// Set pt_target point as pt_goal point or pick a random point
 		if (violation_flag) {
-			(pt_target.ptr())[0] = (rand()*100+100);
-			(pt_target.ptr())[1] = (rand()*100+100);
+			double rand1 = pow((-1),(rand()%2+1))*(rand()%10+10);
+			double rand2 = pow((-1),(rand()%2+1))*(rand()%10+10);
+			pt_target[0][0]= rand1;
+			pt_target[0][1]= rand2;
+			//cout << "pt_target" << endl;
+			//cout << rand1<< endl;
+			//cout << rand2 << endl;
 		} else {
-		    (pt_target.ptr())[0] = (pt_goal.ptr())[0];
-		    (pt_target.ptr())[1] = (pt_goal.ptr())[1];
+		    pt_target[0][0] = pt_goal[0][0];
+		    pt_target[0][1] = pt_goal[0][1];
 		}
 
 		/// Find Nearest Neighbor Point(pt_nearest)
-		index.knnSearch(pt_target, indices, dists, 1, flann::SearchParams(50));
+		index.knnSearch(pt_target, indices, dists, nn, flann::SearchParams(128));
 		pt_nearest[0][0] = (index.getPoint(indices[0][0]))[0];
         pt_nearest[0][1] = (index.getPoint(indices[0][0]))[1];
+		//cout << "pt_nearest" << endl;
+		//cout << pt_nearest[0][0] << endl;
+		//cout << pt_nearest[0][1] << endl;
 
 		// If obstacles present, do collision check
-		if(obstacle_flag){
-		    // Collision Check for NN-Point(pt_nearest) and new edge 
-		} else{
-			// No obstacle
-		}
+		//if(obstacle_flag){
+		//    // Collision Check for NN-Point(pt_nearest) and new edge 
+		//} else{
+		//	// No obstacle
+		//}
 
 		calculateNewPoint(pt_nearest, pt_target, pt_new);
 
@@ -127,13 +143,34 @@ int main(int argc, char** argv){
 
 		/// If collision check pass, Add new point and new edge to tree
 		index.addPoints(pt_new);
-
+		//cout << "pt_new" << endl;
+		//cout << pt_new[0][0]<< endl;
+		//cout << pt_new[0][1] << endl;
+	
 		ofstream out("cpp_plot/path",ofstream::app);
-		out << pt_new[0][0] << " " << pt_new[0][1] << endl;
-    }
+		out <<  pt_new[0][0] << " " << pt_new[0][1] << " " 
+			<<  pt_nearest[0][0] << " " << pt_nearest[0][1] << " " 
+			<<  pt_target[0][0] << " " << pt_target[0][1] << " " 
+			<<  calculateDistance(pt_target, pt_nearest) << " " << endl;
+	}
 	return 1;
 }
-
+void pi(Index<L2<double> > index,int a){
+	Matrix<double> pt_test(new double[2],1,2);
+	for(int i = 0; i < a;i++){
+		pt_test[0][0] = (index.getPoint(i))[0];
+		pt_test[0][1] = (index.getPoint(i))[1];
+		cout << pt_test[0][0]<<"\t"<<pt_test[0][1]<<endl;
+	}
+}
+void pp(Matrix<double> pt){
+	cout << pt[0][0] << "\t"
+	     << pt[0][1] << endl;
+}
+void ap(Matrix<double> *pt,double a, double b){
+	(*pt)[0][0] = a;
+	(*pt)[0][1] = b;
+}
 double calculateDistance(Matrix<double> pt1, Matrix<double> pt2){
 	double x1 = pt1[0][0];
     double y1 = pt1[0][1];
@@ -186,6 +223,15 @@ void calculateNewPoint(Matrix<double> pt_nearest, Matrix<double> pt_target,Matri
 //	(*workspace)[2][1] = l2 * sin(theta1 + theta2) + (*workspace)[1][1];
 //}
 bool collisionCheck(Matrix<double> *point){
+	/*
+	 * construct rect for link1
+	 *		set height and width
+	 * 		set center point to "finally espected" position
+	 *		rotate joint value 
+	 */
+
+
+
 	// Calculate center point(cp)
 	double cp1_x = l1/2;
 	double cp1_y = w/2;
