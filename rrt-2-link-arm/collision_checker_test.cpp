@@ -46,12 +46,10 @@ TEST(EXAMPLE, RectRectRotation) {
 
     tftwo_rect_box1.setRotation(rotation_matrix);
 
-    rotation_test = tftwo_rect_box1.getRotation();
- 	cout << rotation_matrix << endl; 
- 	cout << rotation_test << endl; 
+    Transform3f tftwo_rect_box2 (Vec3f(2.8283, 0.0, 0.0));
 
-	/// Touch: 3.4142
-    Transform3f tftwo_rect_box2 (Vec3f(2.4143, 0.0, 0.0));
+    tftwo_rect_box2.setRotation(rotation_matrix);
+
     collision = solver.shapeIntersect(two_rect_box1, tftwo_rect_box1, two_rect_box2, tftwo_rect_box2, contact_point,dist,NULL);
     EXPECT_TRUE(collision);
     ////// Touch
