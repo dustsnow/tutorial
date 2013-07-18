@@ -88,3 +88,4 @@ run the rrt without obstacles. Pick a point from the result. Place the obstacle 
 
 
 Now the collision check works, the rrt can avoid the obstacles. But we need a way to retrive the path from rrt
+Done!
