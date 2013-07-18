@@ -33,7 +33,7 @@ int l1 = 1.0;//length of link 1
 int l2 = 2.0;//length of link 2
 
 int w = 0.1;
-double step_size = 0.1;
+double step_size = 0.09;
 
 bool violation_flag = false;// Collision Checker result. if true, pick a random point as pt_target; else set pt_target to pt_goal
 bool obstacle_flag = true;// If true, do collision check; else, do direct approach
@@ -46,6 +46,8 @@ void workspaceConversion(Matrix<double> *workspace, Matrix<double> jointspace);
 void pi(Index<L2<double> > index,int a);
 void calcCenterPoint(Matrix<double> pt,Matrix<double> *cp);
 bool collisionCheck(Matrix<double> pt);
+void findLinkset(vector<Matrix<double> > linkset);
+void printLinkset(vector<Matrix<double> > linkset);
 
 int main(int argc, char** argv){
 	// Center point for two links
@@ -67,13 +69,9 @@ int main(int argc, char** argv){
 	dataset[0][0] = 0.1;
 	dataset[0][1] = 0.2;
 
-//	/// RRT data of links. First row is the parent node; Middle is the self node; Last ro is the child point;
+	// linkset stores all the link in RRT
+	vector<Matrix<double> > linkset;
 
-	Matrix<double> linkset(new double[6],3,2); 
-	linkset[0][0] = 0;linkset[1][0] = 0;linkset[2][0] = 0;
-	linkset[0][1] = 0;linkset[1][1] = 0;linkset[2][1] = 0;
-
-	vector<Matrix<double> > path;
 
 	///Construct index
 	Index<L2<double> > index(dataset,flann::KDTreeIndexParams(4));
@@ -86,11 +84,6 @@ int main(int argc, char** argv){
 	/// Target point matrix(randomly picked point or pt_goal point)
 	Matrix<double> pt_target(new double[2],1,2);
 
-    /// pt_nearest point 
-
-	Matrix<double> pt_nearest(new double[2],1,2);
-	pt_nearest[0][0] = 0.1;
-	pt_nearest[0][1] = 0.2;
 
 	/// outpoint point 
 	Matrix<double> outpoint(new double[2],1,2);
@@ -112,15 +105,19 @@ int main(int argc, char** argv){
 	srand(time(NULL));
 	int number_of_points = 0;
 	while(true){
+
+		/// RRT data of links. First row is self node, second row is parent node
+		//the first node is root node. Since root doesn't have parent node, make the second row as the root itself.
+		Matrix<double> link(new double[4],2,2); 
+
+	    /// pt_nearest point 
+		Matrix<double> pt_nearest(new double[2],1,2);
+		pt_nearest[0][0] = 0.1;
+		pt_nearest[0][1] = 0.2;
+
 		/// pt_new point 
 	    Matrix<double> pt_new(new double[2],1,2);
-	    /* Try "Direct Approach", 
-		 * If invalid nearsest accountered, 
-		 * 		Go "Randomized Approach"
-		 * Back to "Direct Approach" again;
-		 */
-		//if(number_of_points >= 1000) break;
-		//number_of_points++;
+
 		if (violation_flag) {
 			double rand1 = -0.5 + (double)rand()/((double)RAND_MAX/(1.0));
 			double rand2 = -1.83 + (double)rand()/((double)RAND_MAX/(3.66));
@@ -153,13 +150,24 @@ int main(int argc, char** argv){
 		/// If collision check pass, Add new point and new edge to tree
 		index.addPoints(pt_new);
 	
+		/// put pt_new and pt_nearest into path
+		link[0][0] = pt_new[0][0];
+        link[0][1] = pt_new[0][1];
+        link[1][0] = pt_nearest[0][0];
+		link[1][1] = pt_nearest[0][1]; 
+		linkset.push_back(link);
+
 		ofstream out("cpp_plot/path",ofstream::app);
 		out <<  pt_new[0][0] << " " << pt_new[0][1] << " " 
 			<<  pt_nearest[0][0] << " " << pt_nearest[0][1] << " " 
-			<<  pt_target[0][0] << " " << pt_target[0][1] << " " 
-			<<  calculateDistance(pt_target, pt_nearest) << " "  
-			<< violation_flag << " "<< endl;
+			<< violation_flag << " "
+			<< endl;
 	}
+	findLinkset(linkset);
+	printLinkset(linkset);
+	//Matrix<double> *data = linkset.data();
+	//getchar();
+
 	return 1;
 }
 /// Print the index
@@ -212,8 +220,8 @@ bool collisionCheck(Matrix<double> pt){
 	 *		rotate the joint value 
 	 */
 	// Obstacles
-	Box obs1(0.1,0.1,0);
-	Transform3f tf_obs1(Vec3f(0.22,2,0));
+	Box obs1(0.4,0.4,0);
+	Transform3f tf_obs1(Vec3f(1.22,2,0));
 
 	// Calculate center point(cp)
 	Matrix<double> cp(new double[4],2,2);
@@ -246,7 +254,45 @@ void calcCenterPoint(Matrix<double> pt,Matrix<double> *cp){
 	(*cp)[1][1] = 2.0*(*cp)[0][1] + l2/2.0 * sin(pt[0][0]+pt[0][1]);
 
 }
+void printLinkset(vector<Matrix<double> > linkset){
+	ofstream out("cpp_plot/linkset",ofstream::app);
+	//	out <<  pt_new[0][0] << " " << pt_new[0][1] << " " 
+	//		<<  pt_nearest[0][0] << " " << pt_nearest[0][1] << " " 
+	//		<< endl;
 
+	for(int i = 0; i < linkset.size(); i++){
+		out << linkset[i][0][0] << " "
+			<< linkset[i][0][1] << " "
+			<< linkset[i][1][0] << " "
+            << linkset[i][1][1] << " " << endl;
+	}
+}
+void findLinkset(vector<Matrix<double> > linkset){
+	double size = linkset.size();
+	double *pt_child = linkset.back()[0];
+	double *pt_parent = linkset.back()[1];
+	double *pt_output;
+	bool root_found = false;
+	ofstream out("cpp_plot/mypath",ofstream::app);
+	while(!root_found){
+		pt_output = pt_child;
+		out << pt_output[0] << " " <<  pt_output[1] << endl;	
+		// If the pt_parent is the root point, break
+		if(pt_parent[0] == 0.1 && pt_parent[1] == 0.2){
+			root_found = true;
+			break;
+		}
+		//Search the pt_parent in the child row(first row), if found, update the pt_child and pt_parent
+		for(int i = 0; i < size; i++){
+			//search for pt_parent_wanted in child position
+			if(linkset[i][0][0] == pt_parent[0] && linkset[i][0][1] == pt_parent[1]){
+				pt_child = linkset[i][0];
+				pt_parent = linkset[i][1];
+				break;
+			}
+		}
+	}
+}
 /* 
  * Convert from joint space to workspace
  * Parameters:
