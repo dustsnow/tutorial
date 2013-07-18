@@ -33,7 +33,7 @@ int l1 = 1.0;//length of link 1
 int l2 = 2.0;//length of link 2
 
 int w = 0.1;
-double step_size = 0.09;
+double step_size = 0.001;
 
 bool violation_flag = false;// Collision Checker result. if true, pick a random point as pt_target; else set pt_target to pt_goal
 bool obstacle_flag = true;// If true, do collision check; else, do direct approach
