@@ -1,0 +1,187 @@
+\hypertarget{rrt-3-link-arm_8cpp}{\section{rrt-\/3-\/link-\/arm.cpp File Reference}
+\label{rrt-3-link-arm_8cpp}\index{rrt-\/3-\/link-\/arm.\-cpp@{rrt-\/3-\/link-\/arm.\-cpp}}
+}
+
+
+This file implement the R\-R\-T algorithm with a 3 link arm.  
+
+
+{\ttfamily \#include $<$flann/flann.\-hpp$>$}\\*
+{\ttfamily \#include \char`\"{}fcl/narrowphase/narrowphase.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}fcl/collision.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}fcl/collision\-\_\-data.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}fcl/collision\-\_\-object.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}fcl/math/transform.\-h\char`\"{}}\\*
+{\ttfamily \#include $<$fstream$>$}\\*
+{\ttfamily \#include $<$cmath$>$}\\*
+{\ttfamily \#include $<$math.\-h$>$}\\*
+{\ttfamily \#include $<$stdlib.\-h$>$}\\*
+{\ttfamily \#include $<$vector$>$}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{rrt-3-link-arm_8cpp_a69777ebed59a7de0095708fbf4fed5b1}{Calc\-New\-Point} (Matrix$<$ double $>$ pt\-\_\-nearest, Matrix$<$ double $>$ pt\-\_\-target, Matrix$<$ double $>$ pt\-\_\-new)
+\begin{DoxyCompactList}\small\item\em Simulate \char`\"{}move a small step\char`\"{}. \end{DoxyCompactList}\item 
+double \hyperlink{rrt-3-link-arm_8cpp_a9be449b5c77a4da2b6d7666549901bc7}{Calc\-Distance} (Matrix$<$ double $>$ point1, Matrix$<$ double $>$ point2)
+\begin{DoxyCompactList}\small\item\em Calculate the distance of two points. \end{DoxyCompactList}\item 
+void \hyperlink{rrt-3-link-arm_8cpp_a7b028451d0f3940693a88977f9ee78d3}{Calc\-Center\-Point} (Matrix$<$ double $>$ point, Matrix$<$ double $>$ $\ast$center\-\_\-points)
+\begin{DoxyCompactList}\small\item\em Calculate the center point of every link of the arm. \end{DoxyCompactList}\item 
+bool \hyperlink{rrt-3-link-arm_8cpp_ac1f23c044d87c314103d5f2895ccde08}{Collision\-Check} (Matrix$<$ double $>$ point)
+\begin{DoxyCompactList}\small\item\em Check the collision of the arm with obstacle presented. \end{DoxyCompactList}\item 
+double \hyperlink{rrt-3-link-arm_8cpp_a2779ec68417ca66526aeeba7ea71a054}{Calc\-Vector\-Length} (Matrix$<$ double $>$ vector)
+\begin{DoxyCompactList}\small\item\em Calculate the length of vector. \end{DoxyCompactList}\item 
+void \hyperlink{rrt-3-link-arm_8cpp_a5a49e88baa8657a9348a16ac2e5fcfac}{Find\-Path} (vector$<$ Matrix$<$ double $>$ $>$ linkset)
+\begin{DoxyCompactList}\small\item\em Finding a path from R\-R\-T. \end{DoxyCompactList}\item 
+\hypertarget{rrt-3-link-arm_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{int {\bfseries main} (int argc, char $\ast$$\ast$argv)}\label{rrt-3-link-arm_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}
+
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{rrt-3-link-arm_8cpp_a2ed9c5f94241ea5bf6091b9ac57106fe}{int \hyperlink{rrt-3-link-arm_8cpp_a2ed9c5f94241ea5bf6091b9ac57106fe}{l1} = 1.\-0}\label{rrt-3-link-arm_8cpp_a2ed9c5f94241ea5bf6091b9ac57106fe}
+
+\begin{DoxyCompactList}\small\item\em length of link 1 \end{DoxyCompactList}\item 
+\hypertarget{rrt-3-link-arm_8cpp_a7b1abffe93e6a3309357f2503c9ac5f1}{int \hyperlink{rrt-3-link-arm_8cpp_a7b1abffe93e6a3309357f2503c9ac5f1}{l2} = 2.\-0}\label{rrt-3-link-arm_8cpp_a7b1abffe93e6a3309357f2503c9ac5f1}
+
+\begin{DoxyCompactList}\small\item\em length of link 2 \end{DoxyCompactList}\item 
+\hypertarget{rrt-3-link-arm_8cpp_a9e91433a77ec2eaf26d85d2d8b0efd7b}{int \hyperlink{rrt-3-link-arm_8cpp_a9e91433a77ec2eaf26d85d2d8b0efd7b}{l3} = 1.\-0}\label{rrt-3-link-arm_8cpp_a9e91433a77ec2eaf26d85d2d8b0efd7b}
+
+\begin{DoxyCompactList}\small\item\em length of link 3 \end{DoxyCompactList}\item 
+\hypertarget{rrt-3-link-arm_8cpp_aac374e320caaadeca4874add33b62af2}{int \hyperlink{rrt-3-link-arm_8cpp_aac374e320caaadeca4874add33b62af2}{w} = 0.\-1}\label{rrt-3-link-arm_8cpp_aac374e320caaadeca4874add33b62af2}
+
+\begin{DoxyCompactList}\small\item\em width of links \end{DoxyCompactList}\item 
+\hypertarget{rrt-3-link-arm_8cpp_a688fa16274b0be53f949fb6ca3b148ad}{double \hyperlink{rrt-3-link-arm_8cpp_a688fa16274b0be53f949fb6ca3b148ad}{step\-\_\-size} = 0.\-1}\label{rrt-3-link-arm_8cpp_a688fa16274b0be53f949fb6ca3b148ad}
+
+\begin{DoxyCompactList}\small\item\em step size of small move \end{DoxyCompactList}\item 
+\hypertarget{rrt-3-link-arm_8cpp_ac1d10b6a0ff01044f14f6e1d4f0d6976}{bool \hyperlink{rrt-3-link-arm_8cpp_ac1d10b6a0ff01044f14f6e1d4f0d6976}{violation\-\_\-flag} = false}\label{rrt-3-link-arm_8cpp_ac1d10b6a0ff01044f14f6e1d4f0d6976}
+
+\begin{DoxyCompactList}\small\item\em Collision Checker result. \end{DoxyCompactList}\item 
+\hypertarget{rrt-3-link-arm_8cpp_af7479e3a6be2cc6cb2945e59a3d70fb3}{bool \hyperlink{rrt-3-link-arm_8cpp_af7479e3a6be2cc6cb2945e59a3d70fb3}{obstacle\-\_\-flag} = true}\label{rrt-3-link-arm_8cpp_af7479e3a6be2cc6cb2945e59a3d70fb3}
+
+\begin{DoxyCompactList}\small\item\em If Obstacle presented. \end{DoxyCompactList}\item 
+\hypertarget{rrt-3-link-arm_8cpp_abadd434a6d1639f29ab52b155a37d8a9}{G\-J\-K\-Solver\-\_\-libccd \hyperlink{rrt-3-link-arm_8cpp_abadd434a6d1639f29ab52b155a37d8a9}{solver}}\label{rrt-3-link-arm_8cpp_abadd434a6d1639f29ab52b155a37d8a9}
+
+\begin{DoxyCompactList}\small\item\em fcl collision checker solver \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This file implement the R\-R\-T algorithm with a 3 link arm. \begin{DoxyAuthor}{Author}
+Peng Hou 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+July 19, 2013 
+\end{DoxyDate}
+
+
+\subsection{Function Documentation}
+\hypertarget{rrt-3-link-arm_8cpp_a7b028451d0f3940693a88977f9ee78d3}{\index{rrt-\/3-\/link-\/arm.\-cpp@{rrt-\/3-\/link-\/arm.\-cpp}!Calc\-Center\-Point@{Calc\-Center\-Point}}
+\index{Calc\-Center\-Point@{Calc\-Center\-Point}!rrt-3-link-arm.cpp@{rrt-\/3-\/link-\/arm.\-cpp}}
+\subsubsection[{Calc\-Center\-Point}]{\setlength{\rightskip}{0pt plus 5cm}void Calc\-Center\-Point (
+\begin{DoxyParamCaption}
+\item[{Matrix$<$ double $>$}]{point, }
+\item[{Matrix$<$ double $>$ $\ast$}]{center\-\_\-points}
+\end{DoxyParamCaption}
+)}}\label{rrt-3-link-arm_8cpp_a7b028451d0f3940693a88977f9ee78d3}
+
+
+Calculate the center point of every link of the arm. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em point} & Consists of three joint values of the arm \\
+\hline
+\mbox{\tt in,out}  & {\em center\-\_\-points} & Stores center points of every link of the arm \\
+\hline
+\end{DoxyParams}
+\hypertarget{rrt-3-link-arm_8cpp_a9be449b5c77a4da2b6d7666549901bc7}{\index{rrt-\/3-\/link-\/arm.\-cpp@{rrt-\/3-\/link-\/arm.\-cpp}!Calc\-Distance@{Calc\-Distance}}
+\index{Calc\-Distance@{Calc\-Distance}!rrt-3-link-arm.cpp@{rrt-\/3-\/link-\/arm.\-cpp}}
+\subsubsection[{Calc\-Distance}]{\setlength{\rightskip}{0pt plus 5cm}double Calc\-Distance (
+\begin{DoxyParamCaption}
+\item[{Matrix$<$ double $>$}]{point1, }
+\item[{Matrix$<$ double $>$}]{point2}
+\end{DoxyParamCaption}
+)}}\label{rrt-3-link-arm_8cpp_a9be449b5c77a4da2b6d7666549901bc7}
+
+
+Calculate the distance of two points. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em point1,point2} & Points consist of the coordinates \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The distance of two points 
+\end{DoxyReturn}
+\hypertarget{rrt-3-link-arm_8cpp_a69777ebed59a7de0095708fbf4fed5b1}{\index{rrt-\/3-\/link-\/arm.\-cpp@{rrt-\/3-\/link-\/arm.\-cpp}!Calc\-New\-Point@{Calc\-New\-Point}}
+\index{Calc\-New\-Point@{Calc\-New\-Point}!rrt-3-link-arm.cpp@{rrt-\/3-\/link-\/arm.\-cpp}}
+\subsubsection[{Calc\-New\-Point}]{\setlength{\rightskip}{0pt plus 5cm}void Calc\-New\-Point (
+\begin{DoxyParamCaption}
+\item[{Matrix$<$ double $>$}]{pt\-\_\-nearest, }
+\item[{Matrix$<$ double $>$}]{pt\-\_\-target, }
+\item[{Matrix$<$ double $>$}]{pt\-\_\-new}
+\end{DoxyParamCaption}
+)}}\label{rrt-3-link-arm_8cpp_a69777ebed59a7de0095708fbf4fed5b1}
+
+
+Simulate \char`\"{}move a small step\char`\"{}. 
+
+Calculate the new point from nearest neighbor point and target point
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em pt\-\_\-nearest} & nearest neighbor point found in index \\
+\hline
+\mbox{\tt in}  & {\em pt\-\_\-target} & target point picked randomly or set as goal point \\
+\hline
+\mbox{\tt in,out}  & {\em pt\-\_\-new} & the new point calculated \\
+\hline
+\end{DoxyParams}
+\hypertarget{rrt-3-link-arm_8cpp_a2779ec68417ca66526aeeba7ea71a054}{\index{rrt-\/3-\/link-\/arm.\-cpp@{rrt-\/3-\/link-\/arm.\-cpp}!Calc\-Vector\-Length@{Calc\-Vector\-Length}}
+\index{Calc\-Vector\-Length@{Calc\-Vector\-Length}!rrt-3-link-arm.cpp@{rrt-\/3-\/link-\/arm.\-cpp}}
+\subsubsection[{Calc\-Vector\-Length}]{\setlength{\rightskip}{0pt plus 5cm}double Calc\-Vector\-Length (
+\begin{DoxyParamCaption}
+\item[{Matrix$<$ double $>$}]{vector}
+\end{DoxyParamCaption}
+)}}\label{rrt-3-link-arm_8cpp_a2779ec68417ca66526aeeba7ea71a054}
+
+
+Calculate the length of vector. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em vector} & a space vector consist of three coordinates \\
+\hline
+\end{DoxyParams}
+\hypertarget{rrt-3-link-arm_8cpp_ac1f23c044d87c314103d5f2895ccde08}{\index{rrt-\/3-\/link-\/arm.\-cpp@{rrt-\/3-\/link-\/arm.\-cpp}!Collision\-Check@{Collision\-Check}}
+\index{Collision\-Check@{Collision\-Check}!rrt-3-link-arm.cpp@{rrt-\/3-\/link-\/arm.\-cpp}}
+\subsubsection[{Collision\-Check}]{\setlength{\rightskip}{0pt plus 5cm}bool Collision\-Check (
+\begin{DoxyParamCaption}
+\item[{Matrix$<$ double $>$}]{point}
+\end{DoxyParamCaption}
+)}}\label{rrt-3-link-arm_8cpp_ac1f23c044d87c314103d5f2895ccde08}
+
+
+Check the collision of the arm with obstacle presented. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em point} & the point consists of three joint values of the arm \\
+\hline
+\end{DoxyParams}
+\hypertarget{rrt-3-link-arm_8cpp_a5a49e88baa8657a9348a16ac2e5fcfac}{\index{rrt-\/3-\/link-\/arm.\-cpp@{rrt-\/3-\/link-\/arm.\-cpp}!Find\-Path@{Find\-Path}}
+\index{Find\-Path@{Find\-Path}!rrt-3-link-arm.cpp@{rrt-\/3-\/link-\/arm.\-cpp}}
+\subsubsection[{Find\-Path}]{\setlength{\rightskip}{0pt plus 5cm}void Find\-Path (
+\begin{DoxyParamCaption}
+\item[{vector$<$ Matrix$<$ double $>$ $>$}]{linkset}
+\end{DoxyParamCaption}
+)}}\label{rrt-3-link-arm_8cpp_a5a49e88baa8657a9348a16ac2e5fcfac}
+
+
+Finding a path from R\-R\-T. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em linkset} & Containing nodes and links of R\-R\-T \\
+\hline
+\end{DoxyParams}
