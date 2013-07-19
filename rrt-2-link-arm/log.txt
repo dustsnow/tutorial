@@ -89,3 +89,17 @@ run the rrt without obstacles. Pick a point from the result. Place the obstacle 
 
 Now the collision check works, the rrt can avoid the obstacles. But we need a way to retrive the path from rrt
 Done!
+
+
+3 link arm cannot find collision correctly.
+rewrite calculating the new point code. Using vector manipulation to find the new point
+Trial Solution 1: link 3 is not proporly positioned
+Trial 1 sucessed. The problem is at the function "calcCenterPoint". 
+NEVER DIVIED BY 2, DEVIDE 2.0 INSTAED
+
+
+cannod print rectangular arms in octave
+fixed. Problems:
+calculate center point: point1_x + (point2_x - point1_x)/2
+joint angle for link2 is ang(link1)+ang(link2)
+rotatation improved, it's able to rotate around center point. Before, it can only rotate around origin
