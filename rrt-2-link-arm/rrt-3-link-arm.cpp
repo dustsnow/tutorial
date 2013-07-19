@@ -16,17 +16,20 @@
 #include <math.h>
 #include <stdlib.h>
 #include <vector>
+#include <stdlib.h>
+#include <string.h>
 
 using namespace flann;
 using namespace std;
 using namespace fcl;
-
+#define underline "\033[4;32m"
+#define none "\033[0;0m"
 int l1 = 1.0;///<length of link 1
 int l2 = 2.0;///<length of link 2
 int l3 = 1.0;///<length of link 3
 
 int w = 0.1;///<width of links
-double step_size = 0.1;///<step size of small move
+double step_size = 0.01;///<step size of small move
 
 bool violation_flag = false;///< Collision Checker result. 
 bool obstacle_flag = true;///< If Obstacle presented 
@@ -41,6 +44,17 @@ double CalcVectorLength(Matrix<double> vector);
 void FindPath(vector<Matrix<double> > linkset);
 
 int main(int argc, char** argv){
+	if(argc == 1){
+		cout << "Arguments Required!!" << endl;
+		cout << "usage:\n"
+			 << "  findpath " << underline << "stepsize\n" << none<<endl;
+		return -1;
+	} else if(strcmp(argv[1],"help")==0){
+		cout << "Find A Path for 3 links robotic arm" << endl;	
+	} else if(argc == 3 && strcmp(argv[1],"-s")==0){
+		step_size = atof(argv[2]);
+	}
+	
 	Matrix<double> pt_cp(new double[6],3,2);// Center point for three links
 
 	// RRT data of nodes. 
