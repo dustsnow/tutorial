@@ -145,15 +145,16 @@ int main(int argc, char** argv){
 
 /**
  * @brief Calculate the distance of two points
- * @param point1,point2 Points consist of the coordinates
+ * @param[in] point1,point2 Points consist of the coordinates
+ * @return The distance of two points
  */
-double CalcDistance(Matrix<double> pt1, Matrix<double> pt2){
-	double x1 = pt1[0][0];
-    double y1 = pt1[0][1];
-    double z1 = pt1[0][2];
-    double x2 = pt2[0][0];
-    double y2 = pt2[0][1];
-    double z2 = pt2[0][2];
+double CalcDistance(Matrix<double> point1, Matrix<double> point2){
+	double x1 = point1[0][0];
+    double y1 = point1[0][1];
+    double z1 = point1[0][2];
+    double x2 = point2[0][0];
+    double y2 = point2[0][1];
+    double z2 = point2[0][2];
 	return sqrt(pow((x1 - x2),2)+pow((y1 - y2),2)+pow((z1 - z2),2));
 }
 
