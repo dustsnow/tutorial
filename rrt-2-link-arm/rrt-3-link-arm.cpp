@@ -3,7 +3,6 @@
  * @author Peng Hou
  * @date July 19, 2013
  * @brief This file implement the RRT algorithm with a 3 link arm
- * 
  */
 
 #include <flann/flann.hpp>
@@ -40,15 +39,9 @@ void CalcCenterPoint(Matrix<double> pt,Matrix<double> *cp);
 bool CollisionCheck(Matrix<double> pt);
 double CalcVectorLength(Matrix<double> vector);
 void FindPath(vector<Matrix<double> > linkset);
-//void workspaceConversion(Matrix<double> *workspace, Matrix<double> jointspace);
-//void pi(Index<L2<double> > index,int a);
-//void printLinkset(vector<Matrix<double> > linkset);
 
 int main(int argc, char** argv){
 	Matrix<double> pt_cp(new double[6],3,2);// Center point for three links
-
-    // Test points
-	Matrix<double> pt_test(new double[3],1,3);
 
 	// RRT data of nodes. 
 	Matrix<double> dataset(new double[3],1,3); 
@@ -67,9 +60,6 @@ int main(int argc, char** argv){
 
 	// Target point matrix(randomly picked point or pt_goal point)
 	Matrix<double> pt_target(new double[3],1,3);
-
-	// zero point 
-	Matrix<double> pt_zero(new double[3],1,3);
 
 	// pt_goal point 
 	Matrix<double> pt_goal(new double[3],1,3);
@@ -164,8 +154,7 @@ double CalcDistance(Matrix<double> pt1, Matrix<double> pt2){
     double x2 = pt2[0][0];
     double y2 = pt2[0][1];
     double z2 = pt2[0][2];
-	double distance = sqrt(pow((x1 - x2),2)+pow((y1 - y2),2)+pow((z1 - z2),2));
-	return distance;
+	return sqrt(pow((x1 - x2),2)+pow((y1 - y2),2)+pow((z1 - z2),2));
 }
 
 /**
@@ -236,15 +225,14 @@ bool CollisionCheck(Matrix<double> point){
 
 	// Now the arm is properly positioned
 	// Do collision check
-	bool collision;
-	collision = solver.shapeIntersect(link1,tf_link1,obs1,tf_obs1,NULL,NULL,NULL);
+	bool collision = solver.shapeIntersect(link1,tf_link1,obs1,tf_obs1,NULL,NULL,NULL);
 	collision = collision || solver.shapeIntersect(link2,tf_link2,obs1,tf_obs1,NULL,NULL,NULL);
 	collision = collision || solver.shapeIntersect(link3,tf_link3,obs1,tf_obs1,NULL,NULL,NULL);
 	return collision;
 }
 
 /** 
- * @beirf Finding a path from RRT
+ * @brief Finding a path from RRT
  * @param[in] linkset Containing nodes and links of RRT
  */
 void FindPath(vector<Matrix<double> > linkset){
@@ -287,94 +275,3 @@ void CalcCenterPoint(Matrix<double> point,Matrix<double> *center_points){
 	(*center_points)[2][0] = l1*cos(point[0][0])+l2*cos(point[0][0]+point[0][1])+l3/2.0*cos(point[0][0]+point[0][1]+point[0][2]);
 	(*center_points)[2][1] = l1*sin(point[0][0])+l2*sin(point[0][0]+point[0][1])+l3/2.0*sin(point[0][0]+point[0][1]+point[0][2]);
 }
-
-
-
-
-/* 
- * Convert from joint space to workspace
- * Parameters:
- *		Matrix<double> workspace
- *			workspace[0][0]:	x coordinate of node1
- *			workspace[0][1]:	y coordinate of node1
- *			workspace[1][0]:	x coordinate of node2
- *			workspace[1][1]:	y coordinate of node2
- *			workspace[2][0]:	x coordinate of node3
- *			workspace[2][1]:	y coordinate of node3
- * 		Matrix<double> jointspace
- *			jointspace[0][0]: joint value 1
- *			jointspace[0][1]: joint value 2
- */
-//void jointsp2worksp(Matrix<double> jointspace, Matrix<double> *workspace){
-//	double theta1 = jointspace[0][0];
-//	double theta2 = jointspace[0][1];
-//	double theta3 = jointspace[0][2];
-//	(workspace)[1][0] = l1 * cos(theta1);
-//	(workspace)[1][1] = l1 * sin(theta1);
-//	(workspace)[2][0] = l2 * cos(theta1 + theta2) + (*workspace)[1][0];
-//	(workspace)[2][1] = l2 * sin(theta1 + theta2) + (*workspace)[1][1];
-//}
-//
-//void worksp2jointsp(Matrix<double> *workspace, Matrix<double> jointspace){
-//	double theta1 = jointspace[0][0];
-//	double theta2 = jointspace[0][1];
-//	(*workspace)[1][0] = l1 * cos(theta1);
-//	(*workspace)[1][1] = l1 * sin(theta1);
-//	(*workspace)[2][0] = l2 * cos(theta1 + theta2) + (*workspace)[1][0];
-//	(*workspace)[2][1] = l2 * sin(theta1 + theta2) + (*workspace)[1][1];
-//}
-
-//void printLinkset(vector<Matrix<double> > linkset){
-//	ofstream out("cpp_plot/linkset",ofstream::app);
-//
-//	for(int i = 0; i < linkset.size(); i++){
-//		out << linkset[i][0][0] << " "
-//			<< linkset[i][0][1] << " "
-//			<< linkset[i][1][0] << " "
-//            << linkset[i][1][1] << " " << endl;
-//	}
-//}
-
-///// Print the index
-//void pi(Index<L2<double> > index,int a){
-//	Matrix<double> pt_test(new double[3],1,3);
-//	for(int i = 0; i < a;i++){
-//		pt_test[0][0] = (index.getPoint(i))[0];
-//		pt_test[0][1] = (index.getPoint(i))[1];
-//		cout << pt_test[0][0]<<"\t"<<pt_test[0][1]<<endl;
-//	}
-//}
-///// print a point
-//void pp(Matrix<double> pt){
-//	cout << pt[0][0] << "\t"
-//	     << pt[0][1] << endl;
-//}
-///// assign a value of a point
-//void ap(Matrix<double> *pt,double a, double b){
-//	(*pt)[0][0] = a;
-//	(*pt)[0][1] = b;
-//}
-
-//void printWorkspace(Matrix<double> pt){
-//}
-//Matrix<double> dataset;
-//load_from_file(dataset,"dataset.h5","dataset");
-
-//Matrix<double> pt_joint_goal (new double[2],1,2);
-//(pt_joint_goal.ptr())[0] = 5;
-//(pt_joint_goal.ptr())[1] = 6;
-//index.addPoints(pt_joint_init);
-//index.addPoints(pt_joint_goal);
-
-//cout<< "pt_query:"<<endl;
-//cout << (pt_query.ptr())[0] << endl;
-//cout << (pt_query.ptr())[1] << endl;
-//cout<< "indices:"<<endl;
-//cout<< (indices.ptr())[0] << endl;
-//cout<< "dists:"<<endl;
-//cout<< (dists.ptr())[0] << endl;
-
-//flann::save_to_file(pt_query,"result.h5","pt_query");
-//flann::save_to_file(dataset,"result.h5","dataset");
-//flann::save_to_file(indices,"result.h5","indices");
-//flann::save_to_file(dists,"result.h5","dists");
