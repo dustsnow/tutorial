@@ -172,13 +172,15 @@ double CalcDistance(Matrix<double> point1, Matrix<double> point2){
  * @param[in,out] pt_new the new point calculated
  */
 void CalcNewPoint(Matrix<double> pt_nearest, Matrix<double> pt_target, Matrix<double> pt_new){
-	double x_nearest = pt_nearest[0][0];
-	double y_nearest = pt_nearest[0][1];
-	double x_target = pt_target[0][0];
-	double y_target = pt_target[0][1];
-	double distance = CalcDistance(pt_target,pt_nearest);
-	pt_new[0][0] = (x_target - x_nearest)*step_size/distance+x_nearest;
-	pt_new[0][1] = (y_target - y_nearest)*step_size/distance+y_nearest;
+	pt_new[0][0] = pt_target[0][0] - pt_nearest[0][0];
+	pt_new[0][1] = pt_target[0][1] - pt_nearest[0][1];
+
+	double length = CalcVectorLength(pt_new);
+	pt_new[0][0] = pt_new[0][0]/length*step_size;
+	pt_new[0][1] = pt_new[0][1]/length*step_size;
+
+	pt_new[0][0] += pt_nearest[0][0];
+	pt_new[0][1] += pt_nearest[0][1];
 }
 
 /**
