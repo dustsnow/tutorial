@@ -1,0 +1,118 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{fullpage}
+\usepackage{subfig}
+\usepackage{placeins}
+
+\title{Realization of Rapidly Exploring Random Tree on Two Links And Three Links Robotic Arm}
+\author{Peng Hou}
+
+\begin{document}
+
+\maketitle
+
+\section{Overview}
+
+Motion planning is a common task for humanoid robot. With the algorithm of the Rapidly Exploring Random Tree, motion planning can be done efficiently. With randomization, RRT can expend the space quickly, which is named "tree". A tree is generated while exploring the space. Randomly picked points will be added to the tree as long as these points a valid. While the tree is expanding, a final condition must be given so that when this condition fulfilled, goal reached and the path can be find on this tree.
+The logic of generating the tree is as follow:
+
+\begin{enumerate}
+	\item Set the root point
+	\item Pick a random point
+	\item Find the nearest neighbor 
+	\item Check collision condition for this point
+	\item If fail: goto step 2; 
+			If pass: add new point and new link to the tree
+	\item Calculate distance between new point and goal point.
+		  If distance is less than step size, goal reached.
+		  Else goto step 2
+\end{enumerate}
+
+\section{Two Links Arm}
+
+The logic of RRT is intuitive, but implementing the RRT algorithm requires another two libraries: FCL and FLANN.
+The FCL library is employed to do collision check in step 4. The FLANN library is used to search for the nearest neighbor in the tree.  
+The tree of two link robot arm is as follow. Every red circle dot represents a node. Every link between two dots represent the path.
+
+\begin{figure}[!ht]
+	\graphicspath{ {./images/} }
+	\centering
+	\includegraphics[width=90mm]{tree2.png}
+	\caption{RRT of two links robotic arm}
+\end{figure}
+\FloatBarrier
+
+After the tree generated and the goal reach, one needs to trace backward on the tree from goal node to root node. In this implementation, I use a two column matrix to serve this job. The first column is the child node, and the second column is the parent node. 
+Searching through this matrix until get the root node will form a path which is the solution.
+
+Here is the animation of two links arm avoiding a obstacle.
+
+\begin{figure}[!ht]
+	\graphicspath{ {./images/} }
+	\centering
+	\subfloat[][]{
+		\includegraphics[width=40mm]{link2_1.png}
+	}
+	\qquad
+	\subfloat[][]{
+		\includegraphics[width=40mm]{link2_2.png}
+	}
+	\qquad
+	\subfloat[][]{
+		\includegraphics[width=40mm]{link2_3.png}
+	}
+	\qquad
+	\subfloat[][]{
+		\includegraphics[width=40mm]{link2_4.png}
+	}
+	\qquad
+	\subfloat[][]{
+		\includegraphics[width=40mm]{link2_5.png}
+	}
+	\qquad
+	\subfloat[][]{
+		\includegraphics[width=40mm]{link2_6.png}
+	}
+	\qquad
+	\caption{Animation of Avoiding obstacle}
+\end{figure}
+\FloatBarrier
+
+\section{Three Links Arm}
+Two links arm and three links arm share the same idea. The only differece is in this case, the joint space is a three dimensional coordinate system but same technique applys here.
+
+Here is the animation of three links arm avoiding a obstacle.
+
+\begin{figure}[!ht]
+	\graphicspath{ {./images/} }
+	\centering
+	\subfloat[][]{
+		\includegraphics[width=40mm]{link3_1.png}
+	}
+	\qquad
+	\subfloat[][]{
+		\includegraphics[width=40mm]{link3_2.png}
+	}
+	\qquad
+	\subfloat[][]{
+		\includegraphics[width=40mm]{link3_3.png}
+	}
+	\qquad
+	\subfloat[][]{
+		\includegraphics[width=40mm]{link3_4.png}
+	}
+	\qquad
+	\subfloat[][]{
+		\includegraphics[width=40mm]{link3_5.png}
+	}
+	\qquad
+	\subfloat[][]{
+		\includegraphics[width=40mm]{link3_6.png}
+	}
+	\qquad
+	\caption{Animation of Avoiding obstacle}
+\end{figure}
+
+\FloatBarrier
+\end{document}

@@ -32,8 +32,8 @@ function [] = rect(x,y,center,theta,color)
 	rect_y = [leftbot_corner_y,lefttop_corner_y,rightop_corner_y,rightbot_corner_y,leftbot_corner_y];
 
 	rect = rotation_matrix * [rect_x;rect_y];
-	rect(1,:) = rect(1,:)+center(1)
-	rect(2,:) = rect(2,:)+center(2)
+	rect(1,:) = rect(1,:)+center(1);
+	rect(2,:) = rect(2,:)+center(2);
 	
 	plot(rect(1,:),rect(2,:),color);
 	hold on;

@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/dustsnow/Documents/tutorial/runtime/ex1.cpp
+stdio.h
+-
+string.h
+-
+fstream
+-
+iostream
+-
+assert.h
+-
+
