@@ -5,11 +5,8 @@ project (ex2)
 include_directories(/usr/include/eigen3)
 include_directories(/usr/local/include/fcl)
 
-
 # Include the subfolder
 include_directories(subfolder)
-
-
 
 # Identify the executable and the source file that we are building (similar to -o command to g++)
 add_executable(main main.cpp subfolder/local.cpp)
